@@ -1,5 +1,5 @@
 package bme.szarch.ticketseller
-class HelloController {
+class TicketTypeController {
     def index() { 
     	def tickettypes = TicketType.list()
         [tickettypes:tickettypes]
