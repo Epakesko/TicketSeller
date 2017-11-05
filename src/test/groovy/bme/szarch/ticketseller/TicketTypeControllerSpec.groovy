@@ -3,7 +3,7 @@ package bme.szarch.ticketseller
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class HelloControllerSpec extends Specification implements ControllerUnitTest<HelloController> {
+class TicketTypeControllerSpec extends Specification implements ControllerUnitTest<TicketTypeController> {
 
     def setup() {
     }
