@@ -1,16 +1,34 @@
 package bme.szarch.ticketseller
 
-class User {
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+import grails.compiler.GrailsCompileStatic
 
-	Role role
-	String userName
-	String password
-	String email
+@GrailsCompileStatic
+@EqualsAndHashCode(includes='username')
+@ToString(includes='username', includeNames=true, includePackage=false)
+class User implements Serializable {
+
+    private static final long serialVersionUID = 1
+
+    String username
+    String password
+    boolean enabled = true
+    boolean accountExpired
+    boolean accountLocked
+    boolean passwordExpired
+
+    Set<Role> getAuthorities() {
+    	println ((UserRole.findAllByUser(this) as List<UserRole>)*.role as Set<Role>)
+        (UserRole.findAllByUser(this) as List<UserRole>)*.role as Set<Role>
+    }
 
     static constraints = {
-        userName size: 5..15, blank: false, unique: true
-        password size: 5..15, blank: false
-        email email: true, blank: false, nullable: true
-        role blank: false
+        password nullable: false, blank: false, password: true
+        username nullable: false, blank: false, unique: true
+    }
+
+    static mapping = {
+	    password column: '`password`'
     }
 }
