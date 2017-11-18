@@ -9,7 +9,8 @@ class UrlMappings {
             }
         }
 
-        "/"(view:"/index")
+	"/concerts"(resources:'concert', includes:['show'])
+        "/"(controller: "calendar", action: "index")
         "500"(view:'/error')
         "404"(view:'/notFound')
     }

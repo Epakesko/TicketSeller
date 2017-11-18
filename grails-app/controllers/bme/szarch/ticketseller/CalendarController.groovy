@@ -4,7 +4,7 @@ import grails.plugin.springsecurity.annotation.Secured
 
 class CalendarController {
 
-	@Secured('isAuthenticated()')
+    @Secured('permitAll')
     def index() { 
     	def concerts = Concert.list()
     	println concerts
