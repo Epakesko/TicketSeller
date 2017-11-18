@@ -8,9 +8,9 @@ class Ticket {
 	Integer count
 
     static constraints = {
-    	ticketType blank: false, unique: false
-    	concert blank: false, unique: false
-    	user nullable: true, unique: false
-    	count blank: false, unique: false
+    	ticketType blank: false
+    	concert blank: false
+    	ownerOf nullable: true
+    	count blank: false
     }
 }

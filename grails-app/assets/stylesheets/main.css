@@ -372,19 +372,10 @@ table {
     border-top: 1px solid #DFDFDF;
     border-collapse: collapse;
     width: 100%;
-    margin-bottom: 1em;
 }
 
 tr {
     border: 0;
-}
-
-tr>td:first-child, tr>th:first-child {
-    padding-left: 1.25em;
-}
-
-tr>td:last-child, tr>th:last-child {
-    padding-right: 1.25em;
 }
 
 td, th {
@@ -445,9 +436,6 @@ th.desc a {
     background: #ffffff;
 }
 
-th:hover, tr:hover {
-    background: #79b94c;
-}
 
 /* PAGINATION */
 

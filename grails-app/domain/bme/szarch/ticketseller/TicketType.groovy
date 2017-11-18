@@ -6,7 +6,7 @@ class TicketType {
 	Double price
 
     static constraints = {
-    	tType blank: false, unique: false
-    	price blank: false, unique: false
+    	tType blank: false
+    	price blank: false
     }
 }

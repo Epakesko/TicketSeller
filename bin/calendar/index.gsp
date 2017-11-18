@@ -1,11 +1,13 @@
 <!doctype html>
 <html>
 <head>
-    <title>Welcome to Grails</title>
-	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="layout" content="main"/>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
     <title>
-        Welcome to Grails
+        TicketSeller
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
@@ -31,10 +33,10 @@
 			eventLimit: true, // allow "more" link when too many events
 			events:[
 				<g:each in="${events}" var="event" status="i">
-	            	{title:'${event.title}', start: '${event.start}'},
+	            	{title:'${event.title}', start: '${event.start}', end: '${event.end}', url: '<g:createLink controller="concert" action="show" id="${event.id}" />'},
 	        	</g:each>
         	],
-			timeFormat: 'H(:mm)'
+			timeFormat: 'H:mm'
 			
 		});
 		
@@ -59,7 +61,7 @@
 
     <div id="content" role="main">
         <section class="row colset-2-its">
-            <h1>Welcome to Grails</h1>
+            <h1>Calendar</h1>
 			<div id='calendar'></div>
         </section>
     </div>
