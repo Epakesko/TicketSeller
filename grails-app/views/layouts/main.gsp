@@ -23,11 +23,32 @@
                     </i> TicketSeller
                 </a>
             </div>
-            <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
-                <ul class="nav navbar-nav navbar-right">
-                    <g:pageProperty name="page.nav" />
-                </ul>
-            </div>
+            <div class="navbar-header right">
+	            <div class="navbar-header">
+	            	<sec:ifNotLoggedIn>
+	            		<a class="navbar-brand" href="<g:createLink controller="login"/>">
+	            			Login
+						</a>
+					</sec:ifNotLoggedIn>
+					<sec:ifLoggedIn>
+						<a class="navbar-brand" href="<g:createLink controller="user"/>">
+	            			<sec:username/>
+						</a>
+	                </sec:ifLoggedIn>
+	            </div>
+	           	<div class="navbar-header">
+	                <sec:ifNotLoggedIn>
+	                	<a class="navbar-brand" href="<g:createLink controller="user" action="register"/>">
+	            			Register
+						</a>
+					</sec:ifNotLoggedIn>
+	                <sec:ifLoggedIn>
+	                	<a class="navbar-brand" href="<g:createLink controller="logout"/>">
+	            			Logout
+						</a>
+	                </sec:ifLoggedIn>
+	            </div>
+	        </div>
         </div>
     </div>
 

@@ -11,6 +11,10 @@ grails:
             # Whether to translate GORM events into Reactor events
             # Disabled by default for performance reasons
             events: false
+    plugin:
+        springsecurity:
+            logout:
+                postOnly: false
 info:
     app:
         name: '@info.app.name@'

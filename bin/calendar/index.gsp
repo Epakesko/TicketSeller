@@ -11,7 +11,6 @@
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-	<link rel="stylesheet" href="/assets/grails.css?compile=false" />
 
 
     <asset:link rel="icon" href="favicon.ico" type="image/x-ico" />
@@ -61,7 +60,7 @@
 
     <div id="content" role="main">
         <section class="row colset-2-its">
-            <h1>Calendar</h1>
+            </br>
 			<div id='calendar'></div>
         </section>
     </div>
@@ -69,8 +68,6 @@
 	
 	<asset:javascript src='fullcalendar.js'/>
 	
-	
-
 
 </body>
 </html>
