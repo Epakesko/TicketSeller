@@ -5,7 +5,7 @@
 		<title>Ticket types</title>
 	</head>
 	<body>
-		<form action="<g:createLink controller="concert" action="save"/>">
+		<form action="<g:createLink controller="concert" action="save"/>" method="post">
 			<h3>Performer: <g:textField name="performer"/></h3>
 			<h3>Location: <g:textField name="location"/></h3>
 			<h3>Starttime (yyyy-MM-dd HH:mm): <g:textField name="startTime"/></h3>

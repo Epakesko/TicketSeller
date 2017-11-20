@@ -70,7 +70,7 @@
 			<div class="registration_message">${flash.message}</div>
 		</g:if>
 
-		<form action="/user/save" method="POST" id="registerForm" class="cssform" autocomplete="off">
+		<form action="<g:createLink controller="user" action="save"/>" method="POST" id="registerForm" class="cssform" autocomplete="off">
 			<p>
 				<label for="username">Username:</label>
 				<input type="text" class="text_" name="username"/>

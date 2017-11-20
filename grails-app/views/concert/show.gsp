@@ -44,7 +44,7 @@
 	
 		<div class="concert-container">
 			<div class="concert-properties">
-				<form action="<g:createLink controller="concert" action="update" id="${data.concert.id}" />">
+				<form action="<g:createLink controller="concert" action="update" id="${data.concert.id}" />" method="post">
 					<div class="concert-description">
 						<sec:ifNotGranted roles='ROLE_ADMIN'>
 					        <h2>${data.concert.performer}</h2>
@@ -82,7 +82,7 @@
 			</div>
 			<div class="concert-buy">
 				<sec:ifLoggedIn>
-					<form action="<g:createLink controller="ticket" action="buy" id="${data.concert.id}"/>">
+					<form action="<g:createLink controller="ticket" action="buy" id="${data.concert.id}"/>" method="post">
 						<h3>Buy tickets:</h3>
 							<g:each in="${data.tickets}" var="ticket" status="i">
 					            <p><g:field type="number" class="numberField" name="buyCount${ticket.id}" value="0"/>&emsp;${ticket.ticketType.price} money/ticket</br>

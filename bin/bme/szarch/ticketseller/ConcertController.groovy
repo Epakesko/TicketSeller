@@ -15,15 +15,16 @@ class ConcertController {
 	@Secured('ROLE_ADMIN')
 	def save() {
 		
-		Concert newConcert = new Concert(performer: params.performer, location: params.location, startTime: Date.parse('yyyy-MM-dd H:m', params.startTime), endTime: Date.parse('yyyy-MM-dd H:m', params.startTime)).save()  
+		Concert newConcert = new Concert(performer: params.performer, location: params.location, startTime: Date.parse('yyyy-MM-dd H:m', params.startTime), endTime: Date.parse('yyyy-MM-dd H:m', params.endTime))
+		newConcert.save()  
 		def tTypes = TicketType.list()
 		tTypes.each{ tType ->
     		if(params[ tType.tType ] != 0){
-    			new Ticket(ticketType: tType.tType, concert: newConcert, count: params[ tType.tType ]).save()                       
+    			new Ticket(ticketType: tType, concert: newConcert, count: params[ tType.tType ]).save(failOnError: true)                       
     		}
 
 		}
-   
+   		redirect(controller: "calendar", action: "index")
 	}
 
     @Secured('permitAll')
