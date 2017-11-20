@@ -7,7 +7,11 @@ class UserController {
 	def springSecurityService
 	def userService
 
-    def index() { }
+	@Secured('permitAll')
+    def index() { 
+    	def tickets = Ticket.findAllByOwnerOf(springSecurityService.currentUser)
+    	[ tickets:tickets ]
+    }
     
     @Secured('permitAll')
     def register() {

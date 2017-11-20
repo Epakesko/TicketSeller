@@ -6,6 +6,26 @@ import grails.plugin.springsecurity.annotation.Secured
 
 class ConcertController {
 
+	@Secured('ROLE_ADMIN')
+	def add() {
+		def tTypes = TicketType.list()
+		[ ticketTypes: tTypes ]   
+	}
+
+	@Secured('ROLE_ADMIN')
+	def save() {
+		
+		Concert newConcert = new Concert(performer: params.performer, location: params.location, startTime: Date.parse('yyyy-MM-dd H:m', params.startTime), endTime: Date.parse('yyyy-MM-dd H:m', params.startTime)).save()  
+		def tTypes = TicketType.list()
+		tTypes.each{ tType ->
+    		if(params[ tType.tType ] != 0){
+    			new Ticket(ticketType: tType.tType, concert: newConcert, count: params[ tType.tType ]).save()                       
+    		}
+
+		}
+   
+	}
+
     @Secured('permitAll')
 	def show() {
 		def concert = Concert.get(params.id)
@@ -17,7 +37,7 @@ class ConcertController {
 	@Secured('ROLE_ADMIN')
 	def delete(){
 		def concert = Concert.get(params.id)
-		Collection<Ticket> tickets = Ticket.findAllByConcert(concert);
+		Collection<Ticket> tickets = Ticket.findAllByConcertAndOwnerOfIsNull(concert);
     	tickets*.delete(flush: true)
 		concert.delete(flush: true)
 		redirect(controller: "calendar", action: "index")
@@ -26,7 +46,7 @@ class ConcertController {
 	@Secured('ROLE_ADMIN')
 	def update(){
 		def concert = Concert.get(params.id)
-		Collection<Ticket> tickets = Ticket.findAllByConcert(concert)
+		Collection<Ticket> tickets = Ticket.findAllByConcertAndOwnerOfIsNull(concert)
 		tickets.each{ ticket ->
 			def ticketID = "ticketCount" + ticket.id
 		    ticket.count = params[ticketID].toInteger()

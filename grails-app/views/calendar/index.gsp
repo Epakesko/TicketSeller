@@ -23,8 +23,16 @@
 	$(document).ready(function() {
 		
 		$('#calendar').fullCalendar({
+			customButtons: {
+		        eventAdder: {
+		            text: 'Add event',
+		            click: function() {
+		                window.location = "<g:createLink controller="concert" action="add"/>";    
+		            }
+		        }
+    		},
 			header: {
-				left: 'prev,next today',
+				left: 'prev,next today <sec:ifAllGranted roles='ROLE_ADMIN'>eventAdder</sec:ifAllGranted>',
 				center: 'title',
 				right: 'month,agendaWeek,agendaDay,listWeek'
 			},
