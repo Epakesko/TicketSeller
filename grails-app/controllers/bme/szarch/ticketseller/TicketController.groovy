@@ -13,7 +13,11 @@ class TicketController {
 		tickets.each{ ticket ->
 			def ticketID = "buyCount" + ticket.id
 			def count = params[ticketID].toInteger()
-			if(count != 0){
+			if(ticket.count - count < 0){
+				flash.message = "Not enough tickets!"                                                     
+			}
+			else if(count > 0){
+
 			    ticket.count -= count
 			    ticket.save(flush: true)
 			    

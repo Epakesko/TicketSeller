@@ -6,6 +6,8 @@ import grails.plugin.springsecurity.annotation.Secured
 
 class ConcertController {
 
+	def concertService
+
 	@Secured('ROLE_ADMIN')
 	def add() {
 		def tTypes = TicketType.list()
@@ -14,12 +16,12 @@ class ConcertController {
 
 	@Secured('ROLE_ADMIN')
 	def save() {
-		
-		Concert newConcert = new Concert(performer: params.performer, location: params.location, startTime: Date.parse('yyyy-MM-dd H:m', params.startTime), endTime: Date.parse('yyyy-MM-dd H:m', params.endTime))
+		Concert newConcert = new Concert(performer: params.performer, location: params.location, startTime: Date.parse("yyyy-MM-dd'T'HH:mm", params.startTime), endTime: Date.parse("yyyy-MM-dd'T'HH:mm", params.endTime))
 		newConcert.save()  
 		def tTypes = TicketType.list()
 		tTypes.each{ tType ->
-    		if(params[ tType.tType ] != 0){
+			def ticketCount = params[ tType.tType ].toInteger()
+    		if(ticketCount > 0){
     			new Ticket(ticketType: tType, concert: newConcert, count: params[ tType.tType ]).save(failOnError: true)                       
     		}
 
@@ -31,14 +33,15 @@ class ConcertController {
 	def show() {
 		def concert = Concert.get(params.id)
 	    def tickets = concert.getTickets()
-	    
-		[data: [ concert: concert, tickets: tickets ]]
+	    def startTimeFormatted = concert.startTime.format("yyyy-MM-dd'T'HH:mm")
+	    def endTimeFormatted = concert.endTime.format("yyyy-MM-dd'T'HH:mm")
+		[data: [ concert: concert, tickets: tickets, startTimeFormatted: startTimeFormatted, endTimeFormatted: endTimeFormatted]]
 	}
 
 	@Secured('ROLE_ADMIN')
 	def delete(){
 		def concert = Concert.get(params.id)
-		Collection<Ticket> tickets = Ticket.findAllByConcertAndOwnerOfIsNull(concert);
+		Collection<Ticket> tickets = Ticket.findAllByConcert(concert);
     	tickets*.delete(flush: true)
 		concert.delete(flush: true)
 		redirect(controller: "calendar", action: "index")
@@ -48,21 +51,28 @@ class ConcertController {
 	def update(){
 		def concert = Concert.get(params.id)
 		Collection<Ticket> tickets = Ticket.findAllByConcertAndOwnerOfIsNull(concert)
-		tickets.each{ ticket ->
-			def ticketID = "ticketCount" + ticket.id
-		    ticket.count = params[ticketID].toInteger()
-		    ticket.save(flush: true)
+		
+		def msg = concertService.checkParameters(params, tickets)
+		
+		if(msg == "OK"){
+			tickets.each{ ticket ->
+				def ticketID = "ticketCount" + ticket.id
+			    ticket.count = params[ticketID].toInteger()
+			    ticket.save(flush: true)
+			}
+	
+			concert.performer = params.performer
+			concert.startTime = Date.parse("yyyy-MM-dd'T'HH:mm", params.startTime)
+			concert.endTime = Date.parse("yyyy-MM-dd'T'HH:mm", params.endTime)
+			concert.location = params.location
+			concert.save(flush: true)
+			flash.message = "Update successful"		           
 		}
-
-		concert.performer = params.performer
-		concert.startTime = Date.parse('yyyy-MM-dd H:m', params.startTime)
-		concert.endTime = Date.parse('yyyy-MM-dd H:m', params.endTime)
-		concert.location = params.location
-		concert.save(flush: true)
-		
-		//TODO: VALIDATE
-		//TODO: FLUSH
-		
+		else{
+			flash.message = msg
+		}
 		redirect(controller: "concert", action: "show", id: params.id)
+		
+		
 	}
 }

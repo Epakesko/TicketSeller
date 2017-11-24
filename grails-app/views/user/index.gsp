@@ -5,9 +5,12 @@
 		<title>Profile</title>
 	</head>
 	<body>
-	<h3> Your tickets: </h3>
+	<table>
+	<tr><th colspan="6" >
+	<h3> Your tickets: </h3></th></tr>
         <g:each in="${tickets}" var="ticket" status="i">
-            <p>Concert: ${ticket.concert.performer} - Category: ${ticket.ticketType.tType} - Count: ${ticket.count}</p>
+            <tr><td class="labeltext">Concert:</td><td>${ticket.concert.performer}</td><td class="labeltext">Category:</td><td>${ticket.ticketType.tType}</td><td class="labeltext">Count:</td><td>${ticket.count}</td></tr>
         </g:each>
+    </table>
 	</body>
 </html>

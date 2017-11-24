@@ -38,57 +38,99 @@
 		    width: 33.3333%; /*Because you only have 3 elements (100 divided by 3)*/
 		    float: left; /*To get them next to each other if all else fails*/
 		}
+		
+		td{
+			vertical-align:middle;
+		}
+		.labeltext{
+			text-align:center;
+		}
+		
 		</style>
 	</head>
 	<body">
-	
+		
 		<div class="concert-container">
 			<div class="concert-properties">
+				
 				<form action="<g:createLink controller="concert" action="update" id="${data.concert.id}" />" method="post">
 					<div class="concert-description">
 						<sec:ifNotGranted roles='ROLE_ADMIN'>
-					        <h2>${data.concert.performer}</h2>
-							<p> <i class="fa grails-icon"> <asset:image src="location.png"/> ${data.concert.location} </i> </p>
-							<p> From ${data.concert.startTime} to ${data.concert.endTime} </p>
+							<table style="width:75%;">
+					        <tr><th colspan="2" >
+					        <h1><b>${data.concert.performer}</b></h1>
+					        </th></tr><tr><td class="labeltext">
+							<i class="fa grails-icon"> <asset:image src="location.png"/> </i></td><td>${data.concert.location} 
+							</td></tr><tr><td class="labeltext">
+							From</td><td>${data.concert.startTime}
+							</td></tr><tr><td class="labeltext">
+							To</td><td>${data.concert.endTime}
+							</td></tr>
+							</table>	
 						</sec:ifNotGranted>
 						<sec:ifAllGranted roles='ROLE_ADMIN'>
+							<table style="width:75%;>
+					        <tr><td colspan="2" >
 					        <h2><g:textField name="performer" value="${data.concert.performer}"/></h2>
-							<p> <i class="fa grails-icon"> <asset:image src="location.png"/> <g:textField name="location" value="${data.concert.location}"/> </i> </p>
-							<p> From <g:textField name="startTime" value="${data.concert.startTime}"/> to <g:textField name="endTime" value="${data.concert.endTime}"/> </p>
+							</td></tr><tr><td class="labeltext">
+							<i class="fa grails-icon"><asset:image src="location.png"/></i></td><td style="vertical-align:middle"><g:textField name="location" value="${data.concert.location}"/> 
+							</td></tr><tr><td class="labeltext">
+							From</td><td><g:field type="datetime-local" name="startTime" value="${data.startTimeFormatted}"/>
+							</td></tr><tr><td class="labeltext">
+							To</td><td><g:field type="datetime-local" name="endTime" value="${data.endTimeFormatted}"/>
+							</td></tr>
+							</table>	
 						</sec:ifAllGranted>	
 					</div>
 					<div class="concert-tickets">
 						<sec:ifNotGranted roles='ROLE_ADMIN'>
-						<h3>Available tickets:</h3>
+						<table style="width:75%;" >
+					    <tr><th colspan="3" >
+						<h3>Available tickets:</h3></th></tr>
 							<g:each in="${data.tickets}" var="ticket" status="i">
-					            <p>Available: ${ticket.count}&emsp;${ticket.ticketType.tType}</br>
+					            <tr><td class="labeltext">Available:</td><td style="text-align:right;">${ticket.count}</td><td>${ticket.ticketType.tType}</td></tr>
 					        </g:each>
+						</table>	
 						</sec:ifNotGranted>
 						<sec:ifAllGranted roles='ROLE_ADMIN'>
-						<h3>Available tickets:</h3>
+						<table style="width:75%;">
+						<tr><th colspan="3" >
+						<h3>Available tickets:</h3></th></tr>
 							<g:each in="${data.tickets}" var="ticket" status="i">
-					            <p>Available: <g:field class="numberField" type="number" name="ticketCount${ticket.id}" value="${ticket.count}"/>&emsp;${ticket.ticketType.tType}</br>
+					            <tr><td class="labeltext">Available:</td><td style="text-align:right;"><g:field class="numberField" type="number" name="ticketCount${ticket.id}" value="${ticket.count}"/></td><td>${ticket.ticketType.tType}</td></tr>
 					        </g:each>
-					    <input type="submit" value="EDIT" />    
-					    </br>  
-					    <form action="<g:createLink controller="concert" action="delete" id="${data.concert.id}" />">
-							<input type="submit" value="DELETE" />
-							</br>
-						</form>  
+					    <tr><td><input type="submit" value="EDIT" /></td></tr>
+					    </table>	
 					    </sec:ifAllGranted>	
 				   	</div>
 				</form>
-
+				
+				<table><tr><td>
+				<sec:ifAllGranted roles='ROLE_ADMIN'>
+			    <form action="<g:createLink controller="concert" action="delete" id="${data.concert.id}" />">
+					<input type="submit" value="DELETE" />
+					</br>
+				</form>
+				</sec:ifAllGranted>  
+				</td>
+				<td>
+				<g:if test='${flash.message}'>
+					<div class="registration_message">${flash.message}</div>
+				</g:if>
+				</td>
+				</tr></table>
 			</div>
 			<div class="concert-buy">
 				<sec:ifLoggedIn>
 					<form action="<g:createLink controller="ticket" action="buy" id="${data.concert.id}"/>" method="post">
-						<h3>Buy tickets:</h3>
+						<table style="width:75%;">
+						<tr><th colspan="2" >
+						<h3>Buy tickets:</h3></th></tr>
 							<g:each in="${data.tickets}" var="ticket" status="i">
-					            <p><g:field type="number" class="numberField" name="buyCount${ticket.id}" value="0"/>&emsp;${ticket.ticketType.price} money/ticket</br>
+					            <tr><td class="labeltext"><g:field type="number" class="numberField" name="buyCount${ticket.id}" value="0"/></td><td>${ticket.ticketType.price} money/ticket</td></tr>
 					        </g:each>
-				        </br>
-			    		<input type="submit" value="BUY" />
+			    		<tr><td><input type="submit" value="BUY" /></td></tr>
+					    </table>	
 					</form>
 				</sec:ifLoggedIn>
 			</div>
