@@ -19,7 +19,7 @@
             <div class="navbar-header">
                 <a class="navbar-brand" href="/#">
                     <i class="fa grails-icon">
-                        <asset:image src="grails-cupsonly-logo-white.svg"/>
+                        <asset:image src="ticketicon.png"/>
                     </i> TicketSeller
                 </a>
             </div>

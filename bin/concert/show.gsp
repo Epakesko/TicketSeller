@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta name="layout" content="main"/>
-		<title>Ticket types</title>
+		<title>Concert</title>
 		<style>
 		.numberField{
 			width:80px;
@@ -108,7 +108,7 @@
 				<table><tr><td>
 				<sec:ifAllGranted roles='ROLE_ADMIN'>
 			    <form action="<g:createLink controller="concert" action="delete" id="${data.concert.id}" />">
-					<input type="submit" value="DELETE" />
+					<input type="submit" value="DELETE" onclick="return confirm('Are you sure you want to delete the concert?')"/>
 					</br>
 				</form>
 				</sec:ifAllGranted>  
@@ -124,10 +124,10 @@
 				<sec:ifLoggedIn>
 					<form action="<g:createLink controller="ticket" action="buy" id="${data.concert.id}"/>" method="post">
 						<table style="width:75%;">
-						<tr><th colspan="2" >
+						<tr><th colspan="3" >
 						<h3>Buy tickets:</h3></th></tr>
 							<g:each in="${data.tickets}" var="ticket" status="i">
-					            <tr><td class="labeltext"><g:field type="number" class="numberField" name="buyCount${ticket.id}" value="0"/></td><td>${ticket.ticketType.price} money/ticket</td></tr>
+					            <tr><td>${ticket.ticketType.tType}</td><td class="labeltext"><g:field type="number" class="numberField" name="buyCount${ticket.id}" value="0"/></td><td>${ticket.ticketType.price} money/ticket</td></tr>
 					        </g:each>
 			    		<tr><td><input type="submit" value="BUY" /></td></tr>
 					    </table>	

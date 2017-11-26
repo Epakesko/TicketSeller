@@ -4,9 +4,11 @@ import grails.plugin.springsecurity.annotation.Secured
 
 class TicketTypeController {
 	
+	def ticketTypeService
+	
 	@Secured('isAuthenticated()')
     def index() { 
-    	def tickettypes = TicketType.list()
+    	def tickettypes = ticketTypeService.listTicketTypes()
         [tickettypes:tickettypes]
     }
 }

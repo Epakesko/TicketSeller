@@ -4,31 +4,17 @@ import grails.plugin.springsecurity.annotation.Secured
 
 class TicketController {
 	def springSecurityService
+    def ticketService
     
     @Secured('isAuthenticated()')
     def buy() { 
-    	def concert = Concert.get(params.id)		
-    	def user = springSecurityService.currentUser	
-		Collection<Ticket> tickets = Ticket.findAllByConcertAndOwnerOfIsNull(concert)
-		tickets.each{ ticket ->
-			def ticketID = "buyCount" + ticket.id
-			def count = params[ticketID].toInteger()
-			if(ticket.count - count < 0){
-				flash.message = "Not enough tickets!"                                                     
-			}
-			else if(count > 0){
-
-			    ticket.count -= count
-			    ticket.save(flush: true)
-			    
-			    Ticket userTickets = Ticket.findByConcertAndTicketTypeAndOwnerOf(concert, ticket.ticketType, user)
-			    if(userTickets == null) userTickets = new Ticket(ticketType: ticket.ticketType, concert: concert, count: 0, ownerOf: user)
-			    userTickets.count += count
-			    
-			    userTickets.save(flush: true)            
-			}
+    	try{
+			ticketService.buyTickets(params, springSecurityService.currentUser)
+			flash.message = "Tickets bought!"
 		}
-		
+		catch(e){
+		    flash.message = e.getMessage()
+		}
 		redirect(controller: "concert", action: "show", id: params.id)
     }
 

@@ -14,7 +14,8 @@ class Concert {
     	performer blank: false
     }
     
+    
     def getTickets() {
     	return Ticket.findAllByConcertAndOwnerOfIsNull(this)
-  }
+  	}
 }

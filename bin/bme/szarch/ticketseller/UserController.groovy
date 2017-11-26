@@ -5,11 +5,12 @@ import grails.plugin.springsecurity.annotation.Secured
 class UserController {
 
 	def springSecurityService
+	def ticketService
 	def userService
 
 	@Secured('permitAll')
     def index() { 
-    	def tickets = Ticket.findAllByOwnerOf(springSecurityService.currentUser)
+    	def tickets = ticketService.getUserTickets(springSecurityService.currentUser)
     	[ tickets:tickets ]
     }
     
@@ -26,14 +27,12 @@ class UserController {
 	
 	@Secured('permitAll')
     def save() {
-		def msg = userService.checkRegistration(params)
-		if(msg == "OK"){
+		try{
+			userService.saveUser(params)
 			flash.message = "Registration succesful. Please login."
-			new User(username: params.username, email: params.email, password: params.password).save(failOnError:true)
 			redirect(controller: "login", action: 'auth')
-		}
-		else{
-			flash.message = msg
+		}catch(e){
+			flash.message = e.getMessage()
 			redirect(action: 'register')
 		}
 		

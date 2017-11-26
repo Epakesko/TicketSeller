@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta name="layout" content="${gspLayout ?: 'main'}"/>
-	<title><g:message code='springSecurity.login.title'/></title>
+	<title>Register</title>
 	<style type="text/css" media="screen">
 	#login {
 		margin: 15px 0px;

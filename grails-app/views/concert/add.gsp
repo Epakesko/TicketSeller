@@ -2,20 +2,36 @@
 <html>
 	<head>
 		<meta name="layout" content="main"/>
-		<title>Ticket types</title>
+		<title>Creating a new concert</title>
+		
+		<style>
+		td{
+			vertical-align:middle;
+		}
+		
+		</style>
 	</head>
 	<body>
 		<form action="<g:createLink controller="concert" action="save"/>" method="post">
-			<h3>Performer: <g:textField name="performer"/></h3>
-			<h3>Location: <g:textField name="location"/></h3>
-			<h3>Starttime <g:field type="datetime-local" name="startTime"/></h3>
-			<h3>Endtime: <g:field type="datetime-local" name="endTime"/></h3>
-			<h3>Tickets:</h3>
+			<table style="width:50%;">
+			<tr><td>Performer:</td><td><g:textField name="performer"/></td></tr>
+			<tr><td>Location:</td><td><g:textField name="location"/></td></tr>
+			<tr><td>Starttime</td><td><g:field type="datetime-local" name="startTime"/></td></tr>
+			<tr><td>Endtime:</td><td><g:field type="datetime-local" name="endTime"/></td></tr>
+			<tr><td>Tickets:</td></tr>
 	        <g:each in="${ticketTypes}" var="ticketType" status="i">
-	            <p>&emsp;Category: ${ticketType.tType} (${ticketType.price} money/ticket): <g:field class="numberField" type="number" name="${ticketType.tType}" value="0"/></p>
+	            <tr><td style="text-align:right;">${ticketType.tType} (${ticketType.price} money/ticket):</td><td><g:field class="numberField" type="number" name="${ticketType.tType}" value="0"/></td></tr>
 	        </g:each>
-			</br>
-			<input type="submit" value="ADD EVENT" />
+	        </table>
+	        <table style="width:50%;"><tr><td>
+			<tr><td><input type="submit" value="ADD EVENT" /></td></td>
+			<td>
+			<g:if test='${flash.message}'>
+				<div class="registration_message" >${flash.message}</div>
+			</g:if>
+			</td>
+			</tr>
+			</table>
 		</form>  
 	</body>
 </html>
